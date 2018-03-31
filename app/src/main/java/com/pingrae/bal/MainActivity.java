@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -47,8 +48,10 @@ public class MainActivity extends AppCompatActivity
 
     private MapFragment mapFragment;
 
-    TextView tv;
-    ToggleButton tb;
+    LocationManager locationManager;
+
+    //TextView tv;
+    //ToggleButton tb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,9 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mOnGPSClick(view);
+
                 try{
                     // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
                     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
@@ -121,6 +127,9 @@ public class MainActivity extends AppCompatActivity
                 }catch(SecurityException ex){
                     Toast.makeText(MainActivity.this, "What the Fuck Shit", Toast.LENGTH_SHORT).show();
                 }
+
+
+
             }
         });
 
@@ -158,8 +167,21 @@ public class MainActivity extends AppCompatActivity
         });
         */
 
-
+        locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
     }
+
+    public void mOnGPSClick(View v){
+        //GPS가 켜져있는지 체크
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(MainActivity.this, "어플 쓸라믄 위치 서비스 켜라 멍청아", Toast.LENGTH_SHORT).show();
+            //GPS 설정화면으로 이동
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            startActivity(intent);
+        }
+    }
+
+
 
     @Override
     public void onMapReady(final GoogleMap map) {
@@ -167,6 +189,8 @@ public class MainActivity extends AppCompatActivity
         //Toast.makeText(MainActivity.this, "동기화 성공", Toast.LENGTH_SHORT).show();
 
         LatLng my_position = new LatLng(my_latitude, my_longitude);
+
+        Log.d("test","fuck google혹시몰라 한국어로 인식장애 해결 찡긋_<");
 
         //Toast.makeText(MainActivity.this, "동기화 후 경도 : " + my_longitude + ", 위도 : " + my_latitude, Toast.LENGTH_SHORT).show();
 
@@ -274,7 +298,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_bluetooth) {
-            // Handle the camera action
+            Intent intent = new Intent(MainActivity.this, BluetoothActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gps) {
 
         } else if (id == R.id.nav_test1) {
