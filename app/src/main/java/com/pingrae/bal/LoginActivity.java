@@ -11,12 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidquery.AQuery;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -27,15 +25,15 @@ import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
 import com.kakao.util.exception.KakaoException;
 import com.kakao.util.helper.log.Logger;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
     //TextView user_nickname,user_email;
     //CircleImageView user_img;
-    //LinearLayout success_layout;
+    LinearLayout login_layout;
     //Button logout_btn;
     LoginButton loginButton;
+    ImageView bicycle_image;
 
     //AQuery aQuery;
 
@@ -69,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // success login -> view
-        //success_layout = (LinearLayout)findViewById(R.id.success_layout);
+        login_layout = (LinearLayout)findViewById(R.id.login_layout);
         //user_nickname =(TextView)findViewById(R.id.user_nickname);
         //user_img =(CircleImageView) findViewById(R.id.user_img);
         //user_email =(TextView)findViewById(R.id.user_email);
@@ -90,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
             requestMe();
         }else{
             //success_layout.setVisibility(View.GONE);
-            loginButton.setVisibility(View.VISIBLE);
+            login_layout.setVisibility(View.VISIBLE);
         }
 
         /*
