@@ -19,9 +19,13 @@
         android:layout_height="wrap_content"
         android:onClick="mOnBluetoothSearch"/>
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal">
     <TextView
         android:text="다른 블루투스 기기에서 내 휴대폰을 찾을 수 있도록 합니다."
-        android:textSize="15dp"
+        android:textSize="14dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -30,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="mOnChkFindme" />
+    </LinearLayout>
 
     <TextView
         android:text="페어링된 목록"

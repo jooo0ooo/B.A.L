@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity
         mapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
         // Location 제공자에서 정보를 얻어오기(GPS)
         // 1. Location을 사용하기 위한 권한을 얻어와야한다 AndroidManifest.xml
         //     ACCESS_FINE_LOCATION : NETWORK_PROVIDER, GPS_PROVIDER
