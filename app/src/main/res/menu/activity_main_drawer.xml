@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_bluetooth"
+            android:icon="@drawable/bluetooth"
+            android:title="Bluetooth" />
+        <item
+            android:id="@+id/nav_gps"
+            android:icon="@drawable/gps"
+            android:title="GPS" />
+        <item
+            android:id="@+id/nav_test1"
+            android:icon="@drawable/bike1"
+            android:title="test" />
+        <item
+            android:id="@+id/nav_test2"
+            android:icon="@drawable/bike2"
+            android:title="test" />
+    </group>
+
+    <item android:title="Setting">
+        <menu>
+            <item
+                android:id="@+id/nav_myinfo"
+                android:icon="@drawable/myinfo"
+                android:title="MyInfo" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

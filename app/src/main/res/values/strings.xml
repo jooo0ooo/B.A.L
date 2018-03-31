@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">B.A.L</string>
+    <string name="kakao_app_key"> 53b5142fef3bdf577c7f6056e1521724</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
