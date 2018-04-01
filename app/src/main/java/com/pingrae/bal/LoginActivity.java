@@ -37,6 +37,14 @@ public class LoginActivity extends AppCompatActivity {
 
     //AQuery aQuery;
 
+    BackPressClose back_pressed;
+
+    @Override
+    public void onBackPressed() {
+        back_pressed.onBackPressed();
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

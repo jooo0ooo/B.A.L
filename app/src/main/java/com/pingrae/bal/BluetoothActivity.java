@@ -11,20 +11,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.DataSetObserver;
+import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.androidquery.AQuery;
+import com.kakao.auth.Session;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -33,7 +41,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class BluetoothActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class BluetoothActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     //BluetoothAdapter
     BluetoothAdapter mBluetoothAdapter;
@@ -58,18 +68,60 @@ public class BluetoothActivity extends AppCompatActivity {
     List<BluetoothDevice> bluetoothDevices;
     int selectDevice;
 
+    //for drawer
+    CircleImageView nav_header_user_img;
+    String user_nickname, user_email, user_picture;
+    AQuery aQuery;
+
+    private View content;
+
+    BackPressClose back_pressed;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bluetooth);
+        setContentView(R.layout.activity_bluetooth_main);
+
+        //for drawer
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        user_nickname = pref.getString("my_nickname", "nothing");
+        user_email = pref.getString("my_email", "nothing");
+        user_picture = pref.getString("picture_url", "nothing");
+
+        View nav_header_view = navigationView.getHeaderView(0);
+
+        nav_header_user_img =(CircleImageView) nav_header_view.findViewById(R.id.user_img);
+        aQuery = new AQuery(this);
+        aQuery.id(nav_header_user_img).image(user_picture); // <- profile small image , userProfile.getProfileImagePath() <- big image
+
+        TextView nav_header_user_nickname = (TextView) nav_header_view.findViewById(R.id.user_nickname);
+        nav_header_user_nickname.setText(user_nickname);
+
+        TextView nav_header_user_email = (TextView) nav_header_view.findViewById(R.id.user_email);
+        nav_header_user_email.setText(user_email);
+
+        content = getLayoutInflater().inflate(R.layout.content_bluetooth, null, false);
 
         //UI
-        txtState = (TextView)findViewById(R.id.txtState);
-        chkFindme = (CheckBox)findViewById(R.id.chkFindme);
-        btnSearch = (Button)findViewById(R.id.btnSearch);
-        listPaired = (ListView)findViewById(R.id.listPaired);
-        listDevice = (ListView)findViewById(R.id.listDevice);
+        txtState = (TextView) content.findViewById(R.id.txtState);
+        chkFindme = (CheckBox) content.findViewById(R.id.chkFindme);
+        btnSearch = (Button) content.findViewById(R.id.btnSearch);
+        listPaired = (ListView) content.findViewById(R.id.listPaired);
+        listDevice = (ListView) content.findViewById(R.id.listDevice);
 
         //Adapter1
         dataPaired = new ArrayList<>();
@@ -142,6 +194,9 @@ public class BluetoothActivity extends AppCompatActivity {
                 }
             }
         });
+
+        back_pressed = new BackPressClose(this);
+
     }
 
 
@@ -322,5 +377,68 @@ public class BluetoothActivity extends AppCompatActivity {
         unregisterReceiver(mBluetoothSearchReceiver);
         unregisterReceiver(mBluetoothScanmodeReceiver);
         super.onDestroy();
+    }
+
+
+    //for drawer
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            //super.onBackPressed();
+            back_pressed.onBackPressed();
+        }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_bluetooth) {
+
+        } else if (id == R.id.nav_gps) {
+            Intent intent = new Intent(BluetoothActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_test1) {
+
+        } else if (id == R.id.nav_test2) {
+
+        } else if (id == R.id.nav_myinfo) {
+
+        } else if (id == R.id.nav_logout) {
+            if(Session.getCurrentSession().isOpened()) {
+                //requestLogout();
+            }
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

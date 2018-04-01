@@ -53,6 +53,10 @@ public class MainActivity extends AppCompatActivity
     //TextView tv;
     //ToggleButton tb;
 
+    BackPressClose back_pressed;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,6 +171,8 @@ public class MainActivity extends AppCompatActivity
         */
 
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
+
+        back_pressed = new BackPressClose(this);
     }
 
     public void mOnGPSClick(View v){
@@ -264,7 +270,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            back_pressed.onBackPressed();
         }
     }
 
@@ -299,6 +306,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_bluetooth) {
             Intent intent = new Intent(MainActivity.this, BluetoothActivity.class);
             startActivity(intent);
+            finish();
         } else if (id == R.id.nav_gps) {
 
         } else if (id == R.id.nav_test1) {
