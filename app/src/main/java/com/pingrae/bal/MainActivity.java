@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.androidquery.AQuery;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_gps_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -311,14 +311,17 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_test1) {
 
-        } else if (id == R.id.nav_test2) {
-
+        } else if (id == R.id.state) {
+            Intent intent = new Intent(MainActivity.this, LockStateActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_myinfo) {
-
-        } else if (id == R.id.nav_logout) {
-            if(Session.getCurrentSession().isOpened()) {
-                requestLogout();
-            }
+            Intent intent = new Intent(MainActivity.this, MyinfoActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_homepage) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://219.255.221.94"));
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

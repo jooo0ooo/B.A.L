@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -114,7 +115,7 @@ public class BluetoothActivity extends AppCompatActivity implements NavigationVi
         TextView nav_header_user_email = (TextView) nav_header_view.findViewById(R.id.user_email);
         nav_header_user_email.setText(user_email);
 
-        content = getLayoutInflater().inflate(R.layout.content_bluetooth, null, false);
+        content = getLayoutInflater().inflate(R.layout.content_bluetooth_main, null, false);
 
         //UI
         txtState = (TextView) content.findViewById(R.id.txtState);
@@ -427,14 +428,17 @@ public class BluetoothActivity extends AppCompatActivity implements NavigationVi
             finish();
         } else if (id == R.id.nav_test1) {
 
-        } else if (id == R.id.nav_test2) {
-
+        } else if (id == R.id.state) {
+            Intent intent = new Intent(BluetoothActivity.this, LockStateActivity.class);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_myinfo) {
-
-        } else if (id == R.id.nav_logout) {
-            if(Session.getCurrentSession().isOpened()) {
-                //requestLogout();
-            }
+            Intent intent = new Intent(BluetoothActivity.this, MyinfoActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (id == R.id.nav_homepage) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://219.255.221.94"));
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

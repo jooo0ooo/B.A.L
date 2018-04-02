@@ -192,9 +192,13 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("my_nickname", userProfile.getNickname());
                 editor.putString("my_email", userProfile.getEmail());
                 editor.putString("picture_url", userProfile.getThumbnailImagePath());
+                editor.putString("picture_url_big", userProfile.getProfileImagePath());
+                editor.putString("lock_state", "lock");
                 editor.commit();
 
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                editor.commit();
+
+                Intent intent = new Intent(LoginActivity.this, LockStateActivity.class);
                 startActivity(intent);
                 finish();
 

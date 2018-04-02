@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/state"
+            android:icon="@drawable/lock"
+            android:title="state" />
+        <item
             android:id="@+id/nav_gps"
             android:icon="@drawable/gps"
             android:title="GPS" />
@@ -16,10 +20,6 @@
             android:id="@+id/nav_test1"
             android:icon="@drawable/bike1"
             android:title="test" />
-        <item
-            android:id="@+id/nav_test2"
-            android:icon="@drawable/bike2"
-            android:title="test" />
     </group>
 
     <item android:title="Setting">
@@ -29,9 +29,9 @@
                 android:icon="@drawable/myinfo"
                 android:title="MyInfo" />
             <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Logout" />
+                android:id="@+id/nav_homepage"
+                android:icon="@drawable/homepage"
+                android:title="HomePage" />
         </menu>
     </item>
 
