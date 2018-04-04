@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity
 
     LocationManager locationManager;
 
-    //TextView tv;
-    //ToggleButton tb;
 
     BackPressClose back_pressed;
 
@@ -136,39 +134,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        /*
-        tv = (TextView) findViewById(R.id.textView2);
-        tv.setText("위치정보 미수신중");
-
-        tb = (ToggleButton)findViewById(R.id.toggle1);
-        */
-
-
-        /*
-        tb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try{
-                    if(tb.isChecked()){
-                        tv.setText("수신중..");
-                        // GPS 제공자의 정보가 바뀌면 콜백하도록 리스너 등록하기~!!!
-                        lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, // 등록할 위치제공자
-                                100, // 통지사이의 최소 시간간격 (miliSecond)
-                                1, // 통지사이의 최소 변경거리 (m)
-                                mLocationListener);
-                        lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, // 등록할 위치제공자
-                                100, // 통지사이의 최소 시간간격 (miliSecond)
-                                1, // 통지사이의 최소 변경거리 (m)
-                                mLocationListener);
-                    }else{
-                        tv.setText("위치정보 미수신중");
-                        lm.removeUpdates(mLocationListener);  //  미수신할때는 반드시 자원해체를 해주어야 한다.
-                    }
-                }catch(SecurityException ex){
-                }
-            }
-        });
-        */
 
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
@@ -223,8 +188,8 @@ public class MainActivity extends AppCompatActivity
             Log.d("test", "onLocationChanged, location:" + location);
             double longitude = location.getLongitude(); //경도
             double latitude = location.getLatitude();   //위도
-            double altitude = location.getAltitude();   //고도
-            float accuracy = location.getAccuracy();    //정확도
+            //double altitude = location.getAltitude();   //고도
+            //float accuracy = location.getAccuracy();    //정확도
             String provider = location.getProvider();   //위치제공자
             //Gps 위치제공자에 의한 위치변화. 오차범위가 좁다.
             //Network 위치제공자에 의한 위치변화
@@ -233,14 +198,10 @@ public class MainActivity extends AppCompatActivity
             my_longitude = longitude;
             my_latitude = latitude;
 
-            Toast.makeText(MainActivity.this, "경도 : " + my_longitude + ", 위도 : " + my_latitude, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this, "경도 : " + my_longitude + ", 위도 : " + my_latitude, Toast.LENGTH_SHORT).show();
 
-           mapFragment.getMapAsync(MainActivity.this);
+            mapFragment.getMapAsync(MainActivity.this);
 
-            /*
-            tv.setText("위치정보 : " + provider + "\n위도 : " + longitude + "\n경도 : " + latitude
-                    + "\n고도 : " + altitude + "\n정확도 : "  + accuracy);
-            */
         }
         public void onProviderDisabled(String provider) {
             // Disabled시

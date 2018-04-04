@@ -42,15 +42,7 @@ public class LockStateActivity extends AppCompatActivity
     String user_nickname, user_email, user_picture;
     AQuery aQuery;
 
-    LocationManager locationManager;
-
-    //TextView tv;
-    //ToggleButton tb;
-
     BackPressClose back_pressed;
-
-    //private View content;
-
 
 
     @Override
@@ -87,7 +79,6 @@ public class LockStateActivity extends AppCompatActivity
         TextView nav_header_user_email = (TextView) nav_header_view.findViewById(R.id.user_email);
         nav_header_user_email.setText(user_email);
 
-        //content = getLayoutInflater().inflate(R.layout.content_lockstate_main, null, false);
 
         final ImageView lockstate = (ImageView) findViewById(R.id.lock_state);
 
@@ -122,10 +113,6 @@ public class LockStateActivity extends AppCompatActivity
                 } else {
                     Toast.makeText(LockStateActivity.this, "Error fuck shit", Toast.LENGTH_SHORT).show();
                 }
-
-
-
-
             }
         });
 
@@ -199,6 +186,7 @@ public class LockStateActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     public void requestLogout() {
         UserManagement.requestLogout(new LogoutResponseCallback() {

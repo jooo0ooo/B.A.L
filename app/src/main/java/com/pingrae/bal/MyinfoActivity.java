@@ -37,8 +37,6 @@ public class MyinfoActivity extends AppCompatActivity
 
     BackPressClose back_pressed;
 
-    //private View content;
-
     Button logoutButton;
 
 
@@ -77,10 +75,6 @@ public class MyinfoActivity extends AppCompatActivity
 
         TextView nav_header_user_email = (TextView) nav_header_view.findViewById(R.id.user_email);
         nav_header_user_email.setText(user_email);
-
-        //content = getLayoutInflater().inflate(R.layout.content_myinfo_main, null, false);
-
-        //content.setVisibility(View.GONE);
 
         main_user_img =(CircleImageView) findViewById(R.id.user_img);
         aQuery = new AQuery(this);

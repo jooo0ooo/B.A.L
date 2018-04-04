@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidquery.AQuery;
-import com.kakao.auth.Session;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -118,11 +117,11 @@ public class BluetoothActivity extends AppCompatActivity implements NavigationVi
         content = getLayoutInflater().inflate(R.layout.content_bluetooth_main, null, false);
 
         //UI
-        txtState = (TextView) content.findViewById(R.id.txtState);
-        chkFindme = (CheckBox) content.findViewById(R.id.chkFindme);
-        btnSearch = (Button) content.findViewById(R.id.btnSearch);
-        listPaired = (ListView) content.findViewById(R.id.listPaired);
-        listDevice = (ListView) content.findViewById(R.id.listDevice);
+        txtState = (TextView) findViewById(R.id.txtState);
+        chkFindme = (CheckBox) findViewById(R.id.chkFindme);
+        btnSearch = (Button) findViewById(R.id.btnSearch);
+        listPaired = (ListView) findViewById(R.id.listPaired);
+        listDevice = (ListView) findViewById(R.id.listDevice);
 
         //Adapter1
         dataPaired = new ArrayList<>();

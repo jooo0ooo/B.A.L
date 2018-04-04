@@ -28,15 +28,8 @@ import com.kakao.util.helper.log.Logger;
 
 public class LoginActivity extends AppCompatActivity {
     private SessionCallback callback;
-    //TextView user_nickname,user_email;
-    //CircleImageView user_img;
     LinearLayout login_layout;
-    //Button logout_btn;
     LoginButton loginButton;
-    ImageView bicycle_image;
-
-    //AQuery aQuery;
-
     BackPressClose back_pressed;
 
     @Override
@@ -74,23 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // success login -> view
         login_layout = (LinearLayout)findViewById(R.id.login_layout);
-        //user_nickname =(TextView)findViewById(R.id.user_nickname);
-        //user_img =(CircleImageView) findViewById(R.id.user_img);
-        //user_email =(TextView)findViewById(R.id.user_email);
-        /*
-        logout_btn = (Button)findViewById(R.id.logout);
-        logout_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Session.getCurrentSession().isOpened()) {
-                    requestLogout();
-                }
-            }
-        });
-        */
-
 
         if(Session.getCurrentSession().isOpened()){
             requestMe();
@@ -98,17 +75,6 @@ public class LoginActivity extends AppCompatActivity {
             //success_layout.setVisibility(View.GONE);
             login_layout.setVisibility(View.VISIBLE);
         }
-
-        /*
-        user_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        */
 
     }
 
@@ -152,21 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void requestLogout() {
-        //success_layout.setVisibility(View.GONE);
-        //loginButton.setVisibility(View.VISIBLE);
-        UserManagement.requestLogout(new LogoutResponseCallback() {
-            @Override
-            public void onCompleteLogout() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(LoginActivity.this, "logout successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
 
     public void requestMe() {
         //success_layout.setVisibility(View.VISIBLE);
@@ -202,9 +153,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
 
-                //user_nickname.setText(userProfile.getNickname());
-                //user_email.setText(userProfile.getEmail());
-                //aQuery.id(user_img).image(userProfile.getThumbnailImagePath()); // <- profile small image , userProfile.getProfileImagePath() <- big image
             }
 
             @Override
