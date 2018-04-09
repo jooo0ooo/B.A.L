@@ -59,7 +59,7 @@
         android:id="@+id/bicycle"
         android:layout_weight="100"
         android:layout_width="fill_parent"
-        android:src="@drawable/login_bicycle_test"
+        android:src="@drawable/login_bicycle_lower"
         android:layout_height="match_parent" />
 
     <com.kakao.usermgmt.LoginButton

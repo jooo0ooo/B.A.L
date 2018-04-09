@@ -1,10 +1,7 @@
 package com.pingrae.bal;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,24 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.androidquery.AQuery;
-import com.kakao.auth.Session;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
-
-import org.json.JSONObject;
-
-import java.net.URL;
-import java.util.Arrays;
-import java.util.concurrent.locks.Lock;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LockStateActivity extends AppCompatActivity
@@ -185,23 +171,5 @@ public class LockStateActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    public void requestLogout() {
-        UserManagement.requestLogout(new LogoutResponseCallback() {
-            @Override
-            public void onCompleteLogout() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(LockStateActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                        Toast.makeText(LockStateActivity.this, "logout successfully", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
     }
 }

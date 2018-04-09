@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "494971419255",
+    "firebase_url": "https://bal-app-e3974.firebaseio.com",
+    "project_id": "bal-app-e3974",
+    "storage_bucket": "bal-app-e3974.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494971419255:android:91ff114e4870e44b",
+        "android_client_info": {
+          "package_name": "com.pingrae.bal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494971419255-7p7embr3limh68bisncl551kn8mfnlj7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pingrae.bal",
+            "certificate_hash": "17c30edb45b85c191ff6144650a019f05cc6b609"
+          }
+        },
+        {
+          "client_id": "494971419255-l34028uaic89o5jecr4oef79reavicek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkDgSWFkXa-gcSab3p7QBXMBjJUE99enk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494971419255-l34028uaic89o5jecr4oef79reavicek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
