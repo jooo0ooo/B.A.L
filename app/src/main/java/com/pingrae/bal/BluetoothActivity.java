@@ -7,12 +7,14 @@ package com.pingrae.bal;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,24 +37,26 @@ import android.widget.Toast;
 
 import com.androidquery.AQuery;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BluetoothActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+
+    private static final UUID MY_UUID = UUID.fromString("00001108-0000-1000-8000-00805F9B34FB");
 
     //BluetoothAdapter
     BluetoothAdapter mBluetoothAdapter;
 
     //블루투스 요청 액티비티 코드
     final static int BLUETOOTH_REQUEST_CODE = 100;
-
-    //UI
     TextView txtState;
     Button btnSearch;
     CheckBox chkFindme;
@@ -184,6 +189,26 @@ public class BluetoothActivity extends AppCompatActivity implements NavigationVi
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BluetoothDevice device = bluetoothDevices.get(position);
 
+                BluetoothDevice dv = mBluetoothAdapter.getRemoteDevice(device.getAddress());
+
+                try {
+                    BluetoothSocket mmSocket = dv.createRfcommSocketToServiceRecord(MY_UUID);
+                    mmSocket.connect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                SharedPreferences pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("bt_address", device.getAddress());
+                editor.commit();
+
+                Toast.makeText(BluetoothActivity.this, device.getAddress(), Toast.LENGTH_LONG).show();
+                Log.d("WTF_WTF!!!", device.getAddress());
+
+
+                /*
                 try {
                     //선택한 디바이스 페어링 요청
                     Method method = device.getClass().getMethod("createBond", (Class[]) null);
@@ -192,6 +217,8 @@ public class BluetoothActivity extends AppCompatActivity implements NavigationVi
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                */
+
             }
         });
 
