@@ -3,16 +3,20 @@ package com.pingrae.bal;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +54,16 @@ public class LockStateActivity extends AppCompatActivity
     // SPP UUID service
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static String address;
+    //
+
+    //
+    Thread mWorkerThread = null;
+    byte[] readBuffer;
+    int readBufferPosition;
+    InputStream mInputStream = null;
+    String mStrDelimiter = "\n";
+    char mCharDelimiter =  '\n';
+    final Context context = this;
     //
 
     CircleImageView nav_header_user_img;
@@ -98,6 +112,10 @@ public class LockStateActivity extends AppCompatActivity
         checkBTState();
         //
 
+        //
+        getWindow().getDecorView().setBackgroundColor(Color.parseColor("#ffffff"));
+        //
+
 
         final ImageView lockstate = (ImageView) findViewById(R.id.lock_state);
 
@@ -110,17 +128,6 @@ public class LockStateActivity extends AppCompatActivity
 
 
                 if(pref.getString("lock_state", "nothing").equals("lock")){
-
-                    /*
-                    lockstate.setImageResource(R.drawable.unlock_image);
-
-                    pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("lock_state", "unlock");
-                    editor.commit();
-                    */
-
-
                     //
                     if(!btAdapter.isEnabled()){
                         Toast.makeText(LockStateActivity.this, "You Should Turn on the Bluetooth", Toast.LENGTH_SHORT).show();
@@ -148,24 +155,7 @@ public class LockStateActivity extends AppCompatActivity
                         }
                     }
 
-
-                    //
-
-                    //for_bt
-
-                    //
-
-
                 } else if(pref.getString("lock_state", "nothing").equals("unlock")) {
-
-                    /*
-                    lockstate.setImageResource(R.drawable.lock_image);
-
-                    pref = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("lock_state", "lock");
-                    editor.commit();
-                    */
 
                     //
 
@@ -194,12 +184,6 @@ public class LockStateActivity extends AppCompatActivity
                         }
                     }
 
-
-                    //
-
-                    //for_bt
-
-                    //
 
 
                 } else {
@@ -331,15 +315,119 @@ public class LockStateActivity extends AppCompatActivity
         }
 
         public void run() {
-            byte[] buffer = new byte[256];  // buffer store for the stream
+            byte[] readBuffer = new byte[256];  // buffer store for the stream
             int bytes; // bytes returned from read()
+
+            readBufferPosition = 0;
+
+            Log.d("why", "why");
 
             // Keep listening to the InputStream until an exception occurs
             while (true) {
                 try {
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer);        // Get number of bytes and message in "buffer"
-                    h.obtainMessage(RECIEVE_MESSAGE, bytes, -1, buffer).sendToTarget();     // Send to message queue Handler
+
+                    bytes = mmInStream.read(readBuffer);        // Get number of bytes and message in "buffer"
+                    Log.d("plz~~~", bytes+"");
+
+
+                    int bytesAvailable = mmInStream.available();
+
+                    if(bytesAvailable >0){
+                        byte[] packetBytes = new byte[bytesAvailable];
+                        mmInStream.read(packetBytes);
+
+                        for(int i=0;i<bytesAvailable;i++) {
+
+                            byte b = packetBytes[i];
+                            if(b == '\n')
+                            {
+                                byte[] encodedBytes = new byte[readBufferPosition];
+                                System.arraycopy(readBuffer, 0, encodedBytes, 0,
+                                        encodedBytes.length);
+                                final String recvMessage = new String(encodedBytes, "UTF-8");
+
+                                readBufferPosition = 0;
+
+                                Log.d(TAG, "recv message: " + recvMessage);
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.post(new Runnable(){
+                                    // 수신된 문자열 데이터에 대한 처리.
+                                    @Override
+                                    public void run() {
+                                        // mStrDelimiter = '\n';
+                                        //
+                                        //mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+
+                                        //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                        //alertDialogBuilder.setTitle("전송받은 데이터");
+                                        //alertDialogBuilder.setMessage(data+mStrDelimiter);
+
+                                        //AlertDialog alertDialog = alertDialogBuilder.create();
+                                        //alertDialog.show();
+
+
+                                        Toast.makeText(LockStateActivity.this, recvMessage, Toast.LENGTH_LONG).show();
+                                    }
+
+                                });
+
+                                //publishProgress(recvMessage);
+                            }
+                            else
+                            {
+                                readBuffer[readBufferPosition++] = b;
+                            }
+                        }
+
+                    }
+/*
+                    byte[] packetBytes = new byte[byteAvailable];
+                    mmInStream.read(packetBytes);
+
+                    for(int i=0; i<byteAvailable; i++) {
+                        Log.d("int", ""+bytes);
+                        byte b = packetBytes[i];
+                        if(b == mCharDelimiter) {
+
+                            Log.d("come", "come?");
+                            byte[] encodedBytes = new byte[readBufferPosition];
+                            //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
+                            //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
+                            System.arraycopy(buffer, 0, encodedBytes, 0, encodedBytes.length);
+
+                            final String data = new String(encodedBytes, "US-ASCII");
+                            readBufferPosition = 0;
+
+                            Log.d("string", data);
+
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable(){
+                                // 수신된 문자열 데이터에 대한 처리.
+                                @Override
+                                public void run() {
+                                    // mStrDelimiter = '\n';
+                                    //
+                                    //mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+                                    /*
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                    alertDialogBuilder.setTitle("전송받은 데이터");
+                                    alertDialogBuilder.setMessage(data+mStrDelimiter);
+
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+
+                                    Toast.makeText(LockStateActivity.this, data, Toast.LENGTH_LONG).show();
+                                }
+
+                            });
+                        }
+                        else {
+                            buffer[readBufferPosition++] = b;
+                        }
+                    }
+                    */
+                    //h.obtainMessage(RECIEVE_MESSAGE, bytes, -1, buffer).sendToTarget();     // Send to message queue Handler
                 } catch (IOException e) {
                     break;
                 }
@@ -358,6 +446,75 @@ public class LockStateActivity extends AppCompatActivity
                 flag2 = Boolean.TRUE;
             }
         }
+    }
+    //
+
+    //
+    void beginListenForData() {
+        final Handler handler = new Handler();
+
+        readBufferPosition = 0;                 // 버퍼 내 수신 문자 저장 위치.
+        readBuffer = new byte[1024];            // 수신 버퍼.
+
+        // 문자열 수신 쓰레드.
+        mWorkerThread = new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                // interrupt() 메소드를 이용 스레드를 종료시키는 예제이다.
+                // interrupt() 메소드는 하던 일을 멈추는 메소드이다.
+                // isInterrupted() 메소드를 사용하여 멈추었을 경우 반복문을 나가서 스레드가 종료하게 된다.
+                while(!Thread.currentThread().isInterrupted()) {
+                    try {
+                        // InputStream.available() : 다른 스레드에서 blocking 하기 전까지 읽은 수 있는 문자열 개수를 반환함.
+                        int byteAvailable = mInputStream.available();   // 수신 데이터 확인
+                        if(byteAvailable > 0) {                        // 데이터가 수신된 경우.
+                            byte[] packetBytes = new byte[byteAvailable];
+                            // read(buf[]) : 입력스트림에서 buf[] 크기만큼 읽어서 저장 없을 경우에 -1 리턴.
+                            mInputStream.read(packetBytes);
+                                for(int i=0; i<byteAvailable; i++) {
+                                    byte b = packetBytes[i];
+                                    if(b == mCharDelimiter) {
+                                        byte[] encodedBytes = new byte[readBufferPosition];
+                                        //  System.arraycopy(복사할 배열, 복사시작점, 복사된 배열, 붙이기 시작점, 복사할 개수)
+                                        //  readBuffer 배열을 처음 부터 끝까지 encodedBytes 배열로 복사.
+                                        System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+
+                                        final String data = new String(encodedBytes, "US-ASCII");
+                                        readBufferPosition = 0;
+
+                                        handler.post(new Runnable(){
+                                            // 수신된 문자열 데이터에 대한 처리.
+                                            @Override
+                                            public void run() {
+                                                // mStrDelimiter = '\n';
+                                                //
+                                                //mEditReceive.setText(mEditReceive.getText().toString() + data+ mStrDelimiter);
+                                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                                                alertDialogBuilder.setTitle("전송받은 데이터");
+                                                alertDialogBuilder.setMessage(data+mStrDelimiter);
+
+                                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                                alertDialog.show();
+                                            }
+
+                                        });
+                                    }
+                                    else {
+                                        readBuffer[readBufferPosition++] = b;
+                                    }
+                                }
+                        }
+
+                    } catch (Exception e) {    // 데이터 수신 중 오류 발생.
+                        Toast.makeText(getApplicationContext(), "데이터 수신 중 오류가 발생 했습니다.", Toast.LENGTH_LONG).show();
+                        finish();            // App 종료.
+                    }
+                }
+            }
+
+        });
+
     }
     //
 

@@ -14,12 +14,12 @@
             android:title="GPS" />
         <item
             android:id="@+id/nav_bluetooth"
-            android:icon="@drawable/bluetooth"
-            android:title="Bluetooth" />
+            android:icon="@drawable/manual"
+            android:title="Manual" />
         <item
             android:id="@+id/nav_test1"
             android:icon="@drawable/bike1"
-            android:title="test" />
+            android:title="My device" />
     </group>
 
     <item android:title="Setting">
