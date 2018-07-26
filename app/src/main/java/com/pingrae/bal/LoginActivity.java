@@ -41,11 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //aQuery = new AQuery(this);
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
-
-        // kakaotalk login button
         loginButton = (LoginButton)findViewById(R.id.com_kakao_login);
         loginButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -70,14 +67,9 @@ public class LoginActivity extends AppCompatActivity {
         if(Session.getCurrentSession().isOpened()){
             requestMe();
         }else{
-            //success_layout.setVisibility(View.GONE);
             login_layout.setVisibility(View.VISIBLE);
         }
-
     }
-
-
-    //checking internet connection
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -102,12 +94,10 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onSessionOpened() {
-            //access token을 성공적으로 발급 받아 valid access token을 가지고 있는 상태. 일반적으로 로그인 후의 다음 activity로 이동한다.
-            if(Session.getCurrentSession().isOpened()){ // 한 번더 세션을 체크해주었습니다.
+            if(Session.getCurrentSession().isOpened()){
                 requestMe();
             }
         }
-
         @Override
         public void onSessionOpenFailed(KakaoException exception) {
             if(exception != null) {
@@ -118,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void requestMe() {
-        //success_layout.setVisibility(View.VISIBLE);
         loginButton.setVisibility(View.GONE);
 
         UserManagement.requestMe(new MeResponseCallback() {
@@ -145,9 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("lock_state", "lock");
                 editor.commit();
 
-                editor.commit();
-
-                Intent intent = new Intent(LoginActivity.this, LockStateActivity.class);
+                Intent intent = new Intent(LoginActivity.this, BottomBarActivity.class);
                 startActivity(intent);
                 finish();
 

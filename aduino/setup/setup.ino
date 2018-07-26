@@ -2,6 +2,7 @@
  
 int blueTx=2;   //Tx (보내는핀 설정)at
 int blueRx=3;   //Rx (받는핀 설정)
+
 SoftwareSerial mySerial(blueTx, blueRx);  //시리얼 통신을 위한 객체선언
  
 void setup() 
